@@ -1,4 +1,4 @@
-23499107829534639
+23502918458777937
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -57029,6 +57029,13 @@ esp32-s2-wrooom
 63
 43
 EESTN5
+gengar
+
+
+0
+0
+0
+EESTN5
 hole_1mm
 Hole 1mm
 
@@ -96284,3 +96291,10 @@ Varistor VF
 0
 2
 2
+footprint
+simbolo_paz
+
+
+0
+0
+0
