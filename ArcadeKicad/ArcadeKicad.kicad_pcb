@@ -1255,6 +1255,17 @@
 				(xyz 0 0 0)
 			)
 		)
+		(model "D:/Librerias-Kicad-master/Librerias-Kicad-master/EESTN5.pretty/EESTN5.3dshapes/R_1206.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Capacitor_SMD:C_1210_3225Metric_Pad1.33x2.70mm_HandSolder"
 		(layer "F.Cu")
