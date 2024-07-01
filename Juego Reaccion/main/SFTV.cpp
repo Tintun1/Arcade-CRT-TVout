@@ -74,7 +74,7 @@ int Player::getY() {
 }
 
 Entidad::Entidad() {
-  velocidad = 1;
+  velocidad = 0;
 }
 
 void Entidad::caida(){
