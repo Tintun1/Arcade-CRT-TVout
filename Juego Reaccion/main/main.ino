@@ -62,6 +62,8 @@ void setup() {
     } while ((objetivo.getX() == jugador1.getX() && objetivo.getY() == jugador1.getY()) || (enemigo.getX() == jugador1.getX() && enemigo.getY() == jugador1.getY()));
     // Velocidad de enemigos
     enemigo.setVel(2,0);
+    //soundtrack();
+    
 }
 
 void Limpiar(){
@@ -99,6 +101,7 @@ void Dibujo(){
   TV.select_font(font6x8);
   TV.print("Puntaje:");
   TV.print(puntaje);
+  // Sistema de vidas
   switch (vidas) {
   case 1:
     TV.bitmap(80, 0, bit_corazon,0,10,10);
@@ -117,13 +120,14 @@ void Dibujo(){
   }
 
   // Dibujo de la pelota
-  TV.draw_circle(jugador1.getX(),jugador1.getY(),BORDE_PELOTA,WHITE);
+  TV.bitmap(jugador1.getX(),jugador1.getY(),bit_stickMan,0,10,10);
 
   // Dibujo del objetivo
-  TV.draw_circle(objetivo.getX(),objetivo.getY(),BORDE_PELOTA,WHITE,INVERT);
+  TV.bitmap(objetivo.getX(),objetivo.getY(),bit_banana,0,10,10);
 
   // Dibujo del enemigo
-  TV.draw_circle(enemigo.getX(),enemigo.getY(),BORDE_PELOTA,INVERT);
+  TV.bitmap(enemigo.getX(),enemigo.getY(),bit_bomba,0,10,10);
+  
 }
 
 void MovimientoPelota(){
@@ -174,6 +178,7 @@ void Objetivos(){
     } while ((jugador1.getX() < objetivo.getX() + BORDE_PELOTA * 2 && jugador1.getY() < objetivo.getY() + BORDE_PELOTA * 2 && jugador1.getX() > objetivo.getX() - BORDE_PELOTA * 2 && jugador1.getY() > objetivo.getY() - BORDE_PELOTA * 2) ||
              (jugador1.getX() < enemigo.getX() + BORDE_PELOTA * 2 && jugador1.getY() < enemigo.getY() + BORDE_PELOTA * 2 && jugador1.getX() > enemigo.getX() - BORDE_PELOTA * 2 && jugador1.getY() > enemigo.getY() - BORDE_PELOTA * 2));
     puntaje++;
+    TV.tone(600,70);
   }
 }
 
@@ -185,6 +190,7 @@ void Enemigos(){
       enemigo.mover(random(10,111), random(10,71));
     } while (jugador1.getX() < enemigo.getX() + BORDE_PELOTA * 2 && jugador1.getY() < enemigo.getY() + BORDE_PELOTA * 2 && jugador1.getX() > enemigo.getX() - BORDE_PELOTA * 2 && jugador1.getY() > enemigo.getY() - BORDE_PELOTA * 2);
     vidas--;
+    TV.tone(200,50);
     TV.bitmap(0, 0, bit_muerte,0,120,90);
     TV.delay(250);
   } else {
@@ -218,6 +224,7 @@ void loop() {
 
   // CMD - Joy
   Gameplay(); 
+
 
   if ( estadoJuego == MENU) {
     TV.bitmap(0, 0,bit_mono,0,120,90);
