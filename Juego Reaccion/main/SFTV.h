@@ -48,13 +48,15 @@ class Player {
 
 class Entidad : public Player {
   private:
-  int velocidad,velocidadX,velocidadY;
+  int velocidad,velocidadX,velocidadY,estado;
   public:
   Entidad();
   void caida();
   void barrido();
   void setVel(int);
   void setVel(int, int);
+  void setEstado(int);
+  int getEstado();
   int getVel();
   int getVelX();
   int getVelY();

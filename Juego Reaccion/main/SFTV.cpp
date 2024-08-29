@@ -94,6 +94,14 @@ void Entidad::setVel(int _velocidadX, int _velocidadY){
   velocidadY = _velocidadY;
 }
 
+void Entidad::setEstado(int _estado){
+  _estado = estado;
+}
+
+int Entidad::getEstado(){
+  return estado;
+}
+
 int Entidad::getVel(){
   return velocidad;
 }

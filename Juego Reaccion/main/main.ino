@@ -23,13 +23,23 @@ SW -  D10
 #define HRES 120
 #define VRES 96
 
+// Tamaños
 #define PELOTA 3
 #define BORDE_PELOTA 5
 #define VELOCIDAD 4
 
+// Movimiento del personaje
+#define IZQUIERDA 1
+#define DERECHA 2
+
+// Estados del juego
 #define MENU 0
 #define JUEGO 1
 #define RANKING 2
+
+// efectos
+#define POSITIVO 1
+#define NADA 0
 
 TVout TV;
 
@@ -44,11 +54,12 @@ Joystick joystick(PINJOY_X, PINJOY_Y, PINJOYBUTTON);
 Player jugador1;
 Entidad enemigo;
 Entidad objetivo;
+Entidad texto_efecto;
 
 long randNumber;
 unsigned long tiempo,tiempoPrevio;
 int puntaje = 0;
-int movimiento;
+int movimiento,direccion_personaje;
 
 void setup() {
     joystick.setup();  //Inicializar joystick
@@ -119,15 +130,37 @@ void Dibujo(){
     break;
   }
 
-  // Dibujo de la pelota
-  TV.bitmap(jugador1.getX(),jugador1.getY(),bit_stickMan,0,10,10);
+  // Dibujo del personaje
+  if (direccion_personaje == DERECHA ) {
+    TV.bitmap(jugador1.getX(),jugador1.getY(),bit_stickMan,0,10,10);
+  }
 
+  if ( direccion_personaje == IZQUIERDA ) {
+    TV.bitmap(jugador1.getX(),jugador1.getY(),bit_stickMan2,0,10,10);
+  }
   // Dibujo del objetivo
   TV.bitmap(objetivo.getX(),objetivo.getY(),bit_banana,0,10,10);
 
   // Dibujo del enemigo
-  TV.bitmap(enemigo.getX(),enemigo.getY(),bit_bomba,0,10,10);
+  if ( millis() % 3 == 0 ){
+    TV.bitmap(enemigo.getX(),enemigo.getY(),bit_bomba2,0,10,10);
+  } else {
+    TV.bitmap(enemigo.getX(),enemigo.getY(),bit_bomba,0,10,10);
+  }
+
+  textoEfecto();
   
+}
+
+void textoEfecto(){
+  if (texto_efecto.getEstado() == POSITIVO){
+    if (millis() - tiempoPrevio <= 1000){
+    TV.select_font(font6x8);
+    TV.print(texto_efecto.getVelX(),texto_efecto.getVelY(),"BIEN!");
+    } 
+  } else {
+    texto_efecto.setEstado(NADA);
+  }
 }
 
 void MovimientoPelota(){
@@ -139,6 +172,7 @@ void MovimientoPelota(){
   // Derecha
   if (joystick.getX() > PUNTO_MUERTO_MAS){
     jugador1.mover(jugador1.getX() + VELOCIDAD,jugador1.getY());
+    direccion_personaje = DERECHA;
   }
   // Abajo
   if (joystick.getY() < PUNTO_MUERTO_MENOS){
@@ -147,6 +181,7 @@ void MovimientoPelota(){
   // Izquierda
   if (joystick.getX() < PUNTO_MUERTO_MENOS){
     jugador1.mover(jugador1.getX() - VELOCIDAD,jugador1.getY());
+    direccion_personaje = IZQUIERDA;
   }
 }
 
@@ -178,6 +213,12 @@ void Objetivos(){
     } while ((jugador1.getX() < objetivo.getX() + BORDE_PELOTA * 2 && jugador1.getY() < objetivo.getY() + BORDE_PELOTA * 2 && jugador1.getX() > objetivo.getX() - BORDE_PELOTA * 2 && jugador1.getY() > objetivo.getY() - BORDE_PELOTA * 2) ||
              (jugador1.getX() < enemigo.getX() + BORDE_PELOTA * 2 && jugador1.getY() < enemigo.getY() + BORDE_PELOTA * 2 && jugador1.getX() > enemigo.getX() - BORDE_PELOTA * 2 && jugador1.getY() > enemigo.getY() - BORDE_PELOTA * 2));
     puntaje++;
+    // generacion random de texto
+    texto_efecto.setVel(random(20,71),random(10,71));
+    texto_efecto.setEstado(POSITIVO);
+    // marca de tiempo
+    tiempoPrevio = millis();
+
     TV.tone(600,70);
   }
 }
@@ -194,7 +235,7 @@ void Enemigos(){
     TV.bitmap(0, 0, bit_muerte,0,120,90);
     TV.delay(250);
   } else {
-    if (millis() % 1000 < 10){
+    if (millis() % 500 < 10){
       // Movimiento Random
       enemigo.mover(enemigo.getX(),random(10,71));
       objetivo.mover(objetivo.getX(),random(10,71));
@@ -216,7 +257,7 @@ void Enemigos(){
 
 void loop() {
 
-  // Liampiar pantalla
+  // Limpiar pantalla
   Limpiar();
   
   // Update controladores
@@ -238,6 +279,4 @@ void loop() {
       vidas = 3;
     }
   }
-
-  Serial.println(estadoJuego);
 }
